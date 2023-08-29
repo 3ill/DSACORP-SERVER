@@ -9,6 +9,9 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/v1/dsacorp', router);
+app.use('/', (req, res) => {
+  res.send('Welcome to DSA SERVER');
+});
 
 const port = 5000;
 
