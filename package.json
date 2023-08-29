@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node App.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "vercerl-build": "echo Dsacorp"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "3illBaby",
   "license": "ISC",
