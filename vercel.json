@@ -2,14 +2,13 @@
   "builds": [
     {
       "src": "./App.js",
-      "use": "@vercel/node"
+      "use": "@now/node"
     }
   ],
-
-  "rewrites": [
+  "routes": [
     {
       "source": "/(.*)",
-      "destination": "/api"
+      "destination": "App.js"
     }
   ]
 }
