@@ -1,7 +1,7 @@
 import express from 'express';
 import * as dotenv from 'dotenv';
 import connectDB from './connect.js';
-import router from './routes/mailRoutes.js';
+import router from './routes/apiRoutes.js';
 dotenv.config();
 const { URL } = process.env;
 

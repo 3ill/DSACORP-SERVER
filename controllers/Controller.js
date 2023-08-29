@@ -1,4 +1,5 @@
 import Subscribe from '../model/Subscribe.js';
+import Users from '../model/Users.js';
 
 /**
  * !All Logic to fetch Data and Upload data to the Database are defined here
@@ -17,6 +18,22 @@ export const getAllSubscribers = async (req, res, next) => {
     return res.status(404).json({ message: 'No mails found' });
   }
   return res.status(200).json({ mails });
+};
+
+//? Function to get all users
+export const getAllUsers = async (req, res) => {
+  let users;
+
+  try {
+    users = await Users.find();
+  } catch (error) {
+    console.error(error, 'An error occurred');
+  }
+
+  if (!users) {
+    return res.status(404).json({ message: 'No users found' });
+  }
+  return res.status(200).json({ users });
 };
 
 //? function to create a new subscriber
@@ -42,4 +59,35 @@ export const subscriber = async (req, res, next) => {
     console.error(error, 'An error occurred');
   }
   return res.status(201).json({ newSubscriber });
+};
+
+//? function to create a new user
+export const addUser = async (req, res) => {
+  const { name, email, social } = req.body;
+
+  let existingUSer;
+  let existingMail;
+
+  try {
+    existingUSer = await Users.findOne({ name });
+    existingMail = await Users.findOne({ email });
+  } catch (err) {
+    console.error(err, 'An error occurred');
+  }
+
+  if (existingUSer && existingMail) {
+    return res.status(400).json({ message: 'Reservation already exists' });
+  }
+
+  const newUser = new Users({
+    name,
+    email,
+    social,
+  });
+  try {
+    await newUser.save();
+  } catch (error) {
+    console.log(error, ' An error occurred');
+  }
+  return res.status(200).json({ newUser });
 };
