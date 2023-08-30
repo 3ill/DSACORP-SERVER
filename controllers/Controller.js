@@ -40,49 +40,54 @@ export const getAllUsers = async (req, res) => {
 export const subscriber = async (req, res, next) => {
   const { email } = req.body;
 
+  let existingEmail;
   try {
-    const existingSubscriber = await Subscribe.findOne({ email });
-    if (existingSubscriber) {
-      return res.status(400).json({ message: 'Already Subscribed' });
-    }
-
-    const newSubscriber = new Subscribe({
-      email: email,
-    });
-
-    await newSubscriber.save();
-
-    return res
-      .status(201)
-      .json({ newSubscriber, message: 'Subscription Success' });
+    existingEmail = await Subscribe.findOne({ email });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'An error occurred' });
+    console.error(error, 'An error occurred');
   }
+  if (existingEmail) {
+    return res.status(400).json({ message: 'Already Subscribed' });
+  }
+
+  const newSubscriber = new Subscribe({
+    email: email,
+  });
+  try {
+    await newSubscriber.save();
+  } catch (error) {
+    console.error(error, 'An error occurred');
+  }
+  return res.status(201).json({ newSubscriber, message: 'Subscription Success' });
 };
 
 //? function to create a new user
 export const addUser = async (req, res) => {
   const { name, email, social } = req.body;
 
+  let existingUSer;
+  let existingMail;
+
   try {
-    const existingUser = await Users.findOne({ $or: [{ name }, { email }] });
-
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    const newUser = new Users({
-      name: name,
-      email: email,
-      social: social,
-    });
-
-    await newUser.save();
-
-    return res.status(201).json({ newUser });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'An error occurred' });
+    existingUSer = await Users.findOne({ name });
+    existingMail = await Users.findOne({ email });
+  } catch (err) {
+    console.error(err, 'An error occurred');
   }
+
+  if (existingUSer && existingMail) {
+    return res.status(400).json({ message: 'Reservation already exists' });
+  }
+
+  const newUser = new Users({
+    name: name,
+    email: email,
+    social: social,
+  });
+  try {
+    await newUser.save();
+  } catch (error) {
+    console.log(error, ' An error occurred');
+  }
+  return res.status(200).json({ newUser, 'Reservation Successful' });
 };
