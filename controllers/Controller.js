@@ -51,7 +51,7 @@ export const subscriber = async (req, res, next) => {
   }
 
   const newSubscriber = new Subscribe({
-    email,
+    email: email,
   });
   try {
     await newSubscriber.save();
@@ -80,9 +80,9 @@ export const addUser = async (req, res) => {
   }
 
   const newUser = new Users({
-    name,
-    email,
-    social,
+    name: name,
+    email: email,
+    social: social,
   });
   try {
     await newUser.save();
