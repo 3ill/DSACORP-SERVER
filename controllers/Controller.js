@@ -89,5 +89,5 @@ export const addUser = async (req, res) => {
   } catch (error) {
     console.log(error, ' An error occurred');
   }
-  return res.status(200).json({ newUser, 'Reservation Successful' });
+  return res.status(200).json({ newUser, message: 'Reservation Successful' });
 };
